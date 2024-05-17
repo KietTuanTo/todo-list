@@ -1,12 +1,14 @@
 import { useState } from 'react';
+import './App.css';
 
 export default function TodoList({ todos, handleChange, handleDelete }) {
     return (
-      <> 
+      <div className='center'> 
 				<ul>
 					{todos.map(t => (
 						<li key={t.id}>
 							<Todo 
+								className='todo'
 								todo={t}
 								handleChange={handleChange}
 								handleDelete={handleDelete} 
@@ -14,7 +16,7 @@ export default function TodoList({ todos, handleChange, handleDelete }) {
 						</li>
 					))}
         </ul>
-			</>
+			</div>
 		)
 }
 
