@@ -1,25 +1,68 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import TodoList from './List.js';
+import { v4 as uuidv4 } from 'uuid';
 
-function App() {
+export default function App() {
+  const [todos, setTodos] = useState([]);
+  const [addInput, setAddInput] = useState('');
+
+  function handleAddInput(e) {
+    setAddInput(e.target.value);
+  }
+
+  function handleAdd() {
+    setAddInput('');
+    const id = uuidv4();
+    setTodos([
+      ...todos,
+      {
+        id: id,
+        text: addInput,
+        done: false
+      }
+    ])
+  }
+
+  function handleChange(todo) {
+    setTodos(todos.map(t => {
+      if (t.id === todo.id) {
+        return todo;
+      } else {
+        return t;
+      }
+    }));
+  }
+
+  function handleDelete(todoId) {
+    setTodos(todos.filter(t => t.id !== todoId));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <form>
+        <h1>Todo List:</h1>
+        <input 
+          type='text'
+          value={addInput}
+          onChange={handleAddInput}
+        />
+        <input 
+          type='submit'
+          value='Add Todo'
+          onClick={e => {
+            e.preventDefault()
+            handleAdd()
+          }}
+        />
+      </form>
+      <TodoList 
+        todos={todos} 
+        handleChange={handleChange}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 }
 
-export default App;
+
